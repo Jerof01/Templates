@@ -1,0 +1,44 @@
+{
+    "providerId": "embluemail.com",
+    "providerName": "emBlue",
+    "serviceId": "email-authentication",
+    "serviceName": "emBlue Email Authentication",
+    "version": 1,
+    "logoUrl": "https://www.embluemail.com/apple-touch-icon.png",
+    "description": "Authorizes emBlue to send email on behalf of the domain: adds emBlue to the SPF record, delegates the emBlue DKIM selector to emBlue, points the bounce subdomain to emBlue and, when the domain has none, creates a monitoring-only DMARC policy.",
+    "variableDescription": "No variables. Apply only the groups the domain is missing: spf, dkim, bounce, dmarc.",
+    "syncPubKeyDomain": "embluemail.com",
+    "syncRedirectDomain": "app.embluemail.com,app-v2.embluemail.com",
+    "records": [
+        {
+            "groupId": "spf",
+            "type": "SPFM",
+            "host": "@",
+            "spfRules": "include:_spf.embluemail.com"
+        },
+        {
+            "groupId": "dkim",
+            "type": "CNAME",
+            "host": "epexo._domainkey",
+            "pointsTo": "epexo._domainkey.embluejet.com",
+            "ttl": 3600
+        },
+        {
+            "groupId": "bounce",
+            "type": "CNAME",
+            "host": "bounce",
+            "pointsTo": "emark4.embluejet.com",
+            "ttl": 3600
+        },
+        {
+            "groupId": "dmarc",
+            "type": "TXT",
+            "host": "_dmarc",
+            "data": "v=DMARC1; p=none;",
+            "ttl": 3600,
+            "essential": "OnApply",
+            "txtConflictMatchingMode": "Prefix",
+            "txtConflictMatchingPrefix": "v=DMARC1"
+        }
+    ]
+}
